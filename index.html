@@ -13,11 +13,13 @@
             --blue-dark: #0F3ACC;
             --blue-light: #4D7FFF;
             --cyan: #00C2FF;
+            --cyan-dark: #0099CC;
             --yellow: #FFD240;
             --white: #FFFFFF;
             --gray-light: #F4F7FF;
             --gray: #6B7280;
-            --navy: #0A1628;
+            --navy: #041830;
+            --navy-mid: #071F56;
         }
 
         html { scroll-behavior: smooth; }
@@ -28,9 +30,9 @@
             position: fixed; top: 0; width: 100%; z-index: 1000;
             padding: 16px 60px;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(10,22,40,0.97);
+            background: rgba(4,24,48,0.97);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0,194,255,0.2);
+            border-bottom: 1px solid rgba(0,194,255,0.15);
         }
         .nav-logo { font-family:'Montserrat',sans-serif; font-weight:900; font-size:22px; color:var(--white); letter-spacing:-0.5px; }
         .nav-logo span { color:var(--cyan); }
@@ -38,100 +40,170 @@
         .nav-links a { color:rgba(255,255,255,0.75); text-decoration:none; font-size:14px; font-weight:500; transition:color 0.3s; }
         .nav-links a:hover { color:var(--cyan); }
         .nav-cta { background:var(--blue)!important; color:var(--white)!important; padding:10px 22px; border-radius:6px; font-weight:700!important; }
-        .nav-cta:hover { background:var(--blue-light)!important; color:var(--white)!important; }
 
-        /* ─── TRUST STRIP ─── */
-        .trust-strip {
-            background: linear-gradient(90deg, var(--blue) 0%, var(--cyan) 100%);
-            padding: 11px 60px;
-            display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+        /* ─── ANIMATED WATER STRIP ─── */
+        .water-strip {
             margin-top: 65px;
+            position: relative;
+            height: 52px;
+            overflow: hidden;
+            background: linear-gradient(90deg, #0A2A7A 0%, #0066CC 40%, #00AADD 70%, #0A2A7A 100%);
+            background-size: 200% 100%;
+            animation: waterFlow 4s linear infinite;
+        }
+        @keyframes waterFlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+        .water-strip-content {
+            position: relative; z-index: 2;
+            display: flex; justify-content: center; align-items: center;
+            height: 100%; gap: 48px; flex-wrap: wrap; padding: 0 60px;
         }
         .trust-item {
             color: var(--white);
             font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
             display: flex; align-items: center; gap: 7px;
         }
+        /* shimmer overlay on strip */
+        .water-strip::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 40%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.08) 60%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2.5s linear infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0%; }
+            100% { background-position: 200% 0%; }
+        }
 
         /* ─── HERO ─── */
         .hero {
             min-height: 94vh;
-            background: linear-gradient(135deg, rgba(10,22,40,0.95) 0%, rgba(15,58,204,0.85) 100%),
-                        url('https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-            display: flex; align-items: center;
+            background: linear-gradient(160deg, #041225 0%, #071F56 45%, #0A2A8A 80%, #083070 100%);
+            display: flex; flex-direction: column;
             position: relative; overflow: hidden;
         }
-        .hero-grid-bg {
-            position:absolute; inset:0;
-            background-image: linear-gradient(rgba(0,194,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,194,255,0.05) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events:none;
+
+        /* Cartoon pipe network SVG behind everything */
+        .pipe-bg {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            opacity: 0.07; pointer-events: none; z-index: 0;
         }
-        .hero-glow {
-            position:absolute; top:-15%; right:-8%;
-            width:700px; height:700px;
-            background:radial-gradient(circle, rgba(26,86,255,0.25) 0%, transparent 65%);
-            border-radius:50%; pointer-events:none;
+
+        /* Floating bubbles */
+        .bubbles { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(0,194,255,0.5), rgba(26,86,255,0.1));
+            border: 1px solid rgba(0,194,255,0.4);
+            animation: floatBubble linear infinite;
         }
-        .hero-glow-2 {
-            position:absolute; bottom:-10%; left:-5%;
-            width:500px; height:500px;
-            background:radial-gradient(circle, rgba(0,194,255,0.15) 0%, transparent 65%);
-            border-radius:50%; pointer-events:none;
+        .bubble:nth-child(1)  { width:12px; height:12px; left:8%;  animation-duration:8s;  animation-delay:0s; }
+        .bubble:nth-child(2)  { width:20px; height:20px; left:18%; animation-duration:11s; animation-delay:2s; }
+        .bubble:nth-child(3)  { width:8px;  height:8px;  left:28%; animation-duration:7s;  animation-delay:4s; }
+        .bubble:nth-child(4)  { width:16px; height:16px; left:42%; animation-duration:13s; animation-delay:1s; }
+        .bubble:nth-child(5)  { width:24px; height:24px; left:55%; animation-duration:10s; animation-delay:3s; }
+        .bubble:nth-child(6)  { width:10px; height:10px; left:65%; animation-duration:9s;  animation-delay:5s; }
+        .bubble:nth-child(7)  { width:18px; height:18px; left:75%; animation-duration:12s; animation-delay:0.5s; }
+        .bubble:nth-child(8)  { width:14px; height:14px; left:85%; animation-duration:8.5s;animation-delay:2.5s; }
+        .bubble:nth-child(9)  { width:6px;  height:6px;  left:93%; animation-duration:6s;  animation-delay:1.5s; }
+        .bubble:nth-child(10) { width:22px; height:22px; left:35%; animation-duration:14s; animation-delay:6s; }
+        @keyframes floatBubble {
+            0%   { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            5%   { opacity: 0.9; }
+            85%  { opacity: 0.6; }
+            100% { transform: translateY(-80px) scale(1); opacity: 0; }
         }
-        .hero-content {
-            position:relative; z-index:2;
-            max-width:1200px; margin:0 auto; padding:0 60px;
-            display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center;
+
+        /* Radial water glow spots */
+        .water-glow-1 {
+            position: absolute; top: -10%; right: 5%;
+            width: 650px; height: 650px;
+            background: radial-gradient(circle, rgba(0,130,255,0.2) 0%, transparent 65%);
+            border-radius: 50%; pointer-events: none; z-index: 1;
+            animation: glowPulse 6s ease-in-out infinite;
+        }
+        .water-glow-2 {
+            position: absolute; bottom: -15%; left: -5%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(0,194,255,0.15) 0%, transparent 65%);
+            border-radius: 50%; pointer-events: none; z-index: 1;
+            animation: glowPulse 8s ease-in-out infinite reverse;
+        }
+        @keyframes glowPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.12); opacity: 0.7; }
+        }
+
+        /* ─── HERO CONTENT ─── */
+        .hero-inner {
+            position: relative; z-index: 2; flex: 1;
+            max-width: 1200px; margin: 0 auto; padding: 60px 60px 40px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
         }
         .hero-badge {
-            display:inline-flex; align-items:center; gap:8px;
-            background:rgba(0,194,255,0.12); border:1px solid rgba(0,194,255,0.35);
-            color:var(--cyan); padding:8px 18px; border-radius:50px;
-            font-size:12px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
-            margin-bottom:28px;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(0,194,255,0.1); border: 1px solid rgba(0,194,255,0.35);
+            color: var(--cyan); padding: 8px 18px; border-radius: 50px;
+            font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+            margin-bottom: 28px;
         }
-        .badge-dot { width:7px; height:7px; background:var(--cyan); border-radius:50%; animation:pulse 2s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
+        .badge-dot { width:7px; height:7px; background:var(--cyan); border-radius:50%; animation:badgePulse 2s infinite; }
+        @keyframes badgePulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
 
-        .hero h1 { font-family:'Montserrat',sans-serif; font-size:54px; font-weight:900; color:var(--white); line-height:1.08; margin-bottom:22px; letter-spacing:-1.5px; }
-        .hero h1 .highlight { color:var(--cyan); }
-        .hero h1 .yellow { color:var(--yellow); }
+        .hero h1 { font-family:'Montserrat',sans-serif; font-size:52px; font-weight:900; color:var(--white); line-height:1.08; margin-bottom:22px; letter-spacing:-1.5px; }
+        .hero h1 .highlight { color: var(--cyan); }
+        .hero h1 .yellow { color: var(--yellow); }
         .hero-sub { font-size:17px; color:rgba(255,255,255,0.68); line-height:1.75; margin-bottom:38px; max-width:480px; }
-        .hero-buttons { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+        .hero-buttons { display:flex; gap:14px; flex-wrap:wrap; }
         .btn-primary {
-            background:linear-gradient(135deg, var(--blue) 0%, var(--cyan) 100%);
-            color:var(--white); padding:16px 34px; border-radius:8px;
+            background: linear-gradient(135deg, var(--blue) 0%, var(--cyan) 100%);
+            color: var(--white); padding: 16px 32px; border-radius: 8px;
             font-family:'Montserrat',sans-serif; font-weight:700; font-size:15px; text-decoration:none;
-            transition:all 0.3s; box-shadow:0 4px 28px rgba(26,86,255,0.5);
-            border: none;
+            transition: all 0.3s; box-shadow: 0 4px 28px rgba(0,194,255,0.35);
         }
-        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 40px rgba(26,86,255,0.6); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(0,194,255,0.5); }
         .btn-emergency {
-            background:var(--yellow); color:var(--navy); padding:16px 28px; border-radius:8px;
+            background: var(--yellow); color: var(--navy); padding: 16px 26px; border-radius: 8px;
             font-family:'Montserrat',sans-serif; font-weight:800; font-size:15px; text-decoration:none;
-            transition:all 0.3s; box-shadow:0 4px 20px rgba(255,210,64,0.4);
+            transition: all 0.3s; box-shadow: 0 4px 20px rgba(255,210,64,0.4);
         }
-        .btn-emergency:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(255,210,64,0.5); }
+        .btn-emergency:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,210,64,0.5); }
 
-        /* ─── HERO RIGHT PANEL ─── */
-        .hero-right { display:flex; flex-direction:column; gap:16px; }
-        .hero-stats { display:grid; grid-template-columns:repeat(3,1fr); border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); }
-        .stat { padding:26px 16px; text-align:center; border-right:1px solid rgba(255,255,255,0.08); }
-        .stat:last-child { border-right:none; }
+        .hero-right { display: flex; flex-direction: column; gap: 16px; }
+        .hero-stats {
+            display: grid; grid-template-columns: repeat(3,1fr);
+            border-radius: 16px; overflow: hidden;
+            border: 1px solid rgba(0,194,255,0.2);
+            background: rgba(0,194,255,0.05);
+            backdrop-filter: blur(8px);
+        }
+        .stat { padding: 26px 16px; text-align: center; border-right: 1px solid rgba(0,194,255,0.12); }
+        .stat:last-child { border-right: none; }
         .stat-number { display:block; font-family:'Montserrat',sans-serif; font-size:36px; font-weight:900; color:var(--cyan); line-height:1; }
         .stat-label { display:block; font-size:11px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1.5px; margin-top:6px; }
-
         .emergency-card {
-            background: linear-gradient(135deg, rgba(255,210,64,0.1) 0%, rgba(255,210,64,0.05) 100%);
+            background: linear-gradient(135deg, rgba(255,210,64,0.08), rgba(255,210,64,0.04));
             border: 1px solid rgba(255,210,64,0.3);
-            border-radius:14px; padding:22px 24px;
-            display:flex; align-items:center; gap:18px;
+            border-radius: 14px; padding: 22px 24px;
+            display: flex; align-items: center; gap: 18px;
         }
-        .emergency-icon { font-size:36px; flex-shrink:0; }
+        .emergency-icon { font-size: 36px; flex-shrink: 0; }
         .emergency-text h4 { font-family:'Montserrat',sans-serif; font-weight:800; font-size:16px; color:var(--yellow); margin-bottom:4px; }
         .emergency-text p { font-size:13px; color:rgba(255,255,255,0.6); line-height:1.5; }
         .emergency-text a { color:var(--yellow); font-weight:700; text-decoration:none; }
+
+        /* ─── ANIMATED WAVE DIVIDER ─── */
+        .wave-divider { position: relative; height: 90px; overflow: hidden; background: transparent; }
+        .wave-divider svg { position: absolute; bottom: 0; width: 200%; animation: waveDrift 5s linear infinite; }
+        .wave-divider-top svg { top: 0; bottom: auto; }
+        @keyframes waveDrift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
 
         /* ─── SECTION SHARED ─── */
         .section-tag { display:inline-block; color:var(--blue); font-size:12px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; margin-bottom:12px; }
@@ -140,7 +212,7 @@
         .section-header p { font-size:16px; color:var(--gray); max-width:480px; margin:0 auto; line-height:1.7; }
 
         /* ─── HOW IT WORKS ─── */
-        .how-it-works { padding:100px 60px; background:var(--gray-light); }
+        .how-it-works { padding:100px 60px; background: var(--gray-light); }
         .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:0; max-width:900px; margin:0 auto; position:relative; }
         .steps::before {
             content:''; position:absolute; top:36px; left:16%; right:16%;
@@ -151,8 +223,7 @@
         .step-circle {
             width:72px; height:72px; border-radius:50%;
             background:linear-gradient(135deg, var(--blue), var(--cyan));
-            color:var(--white);
-            font-family:'Montserrat',sans-serif; font-size:24px; font-weight:800;
+            color:var(--white); font-family:'Montserrat',sans-serif; font-size:24px; font-weight:800;
             display:flex; align-items:center; justify-content:center;
             margin:0 auto 20px; box-shadow:0 4px 20px rgba(26,86,255,0.4);
         }
@@ -171,22 +242,22 @@
             background:linear-gradient(90deg, var(--blue), var(--cyan));
             opacity:0; transition:opacity 0.3s;
         }
-        .service-card:hover { border-color:rgba(26,86,255,0.2); transform:translateY(-5px); box-shadow:0 16px 48px rgba(26,86,255,0.12); background:var(--white); }
+        .service-card:hover { border-color:rgba(0,194,255,0.25); transform:translateY(-5px); box-shadow:0 16px 48px rgba(0,150,255,0.12); background:var(--white); }
         .service-card:hover::before { opacity:1; }
-        .service-icon { width:56px; height:56px; background:linear-gradient(135deg, rgba(26,86,255,0.1), rgba(0,194,255,0.1)); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:28px; margin-bottom:20px; }
+        .service-icon { width:56px; height:56px; background:linear-gradient(135deg, rgba(26,86,255,0.1), rgba(0,194,255,0.15)); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:28px; margin-bottom:20px; }
         .service-card h3 { font-family:'Montserrat',sans-serif; font-size:18px; font-weight:700; color:var(--navy); margin-bottom:10px; }
         .service-card p { font-size:14px; color:var(--gray); line-height:1.7; }
 
         /* ─── WHY US ─── */
-        .why-us { padding:100px 60px; background:linear-gradient(135deg, var(--navy) 0%, #0F2A6B 100%); position:relative; overflow:hidden; }
-        .why-glow { position:absolute; top:-20%; right:-5%; width:600px; height:600px; background:radial-gradient(circle, rgba(26,86,255,0.15) 0%, transparent 65%); border-radius:50%; pointer-events:none; }
-        .why-glow-2 { position:absolute; bottom:-15%; left:-5%; width:400px; height:400px; background:radial-gradient(circle, rgba(0,194,255,0.1) 0%, transparent 65%); border-radius:50%; pointer-events:none; }
+        .why-us { padding:100px 60px; background:linear-gradient(160deg, var(--navy) 0%, #0A2255 100%); position:relative; overflow:hidden; }
+        .why-glow { position:absolute; top:-20%; right:-5%; width:600px; height:600px; background:radial-gradient(circle, rgba(0,150,255,0.12) 0%, transparent 65%); border-radius:50%; animation:glowPulse 7s ease-in-out infinite; }
+        .why-glow-2 { position:absolute; bottom:-15%; left:-5%; width:400px; height:400px; background:radial-gradient(circle, rgba(0,194,255,0.08) 0%, transparent 65%); border-radius:50%; animation:glowPulse 9s ease-in-out infinite reverse; }
         .why-us .section-header h2 { color:var(--white); }
         .why-us .section-header p { color:rgba(255,255,255,0.55); }
         .why-us .section-tag { color:var(--cyan); }
         .why-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; max-width:1200px; margin:0 auto; }
-        .why-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:36px 30px; transition:all 0.3s; }
-        .why-card:hover { background:rgba(26,86,255,0.1); border-color:rgba(0,194,255,0.3); transform:translateY(-4px); }
+        .why-card { background:rgba(0,194,255,0.04); border:1px solid rgba(0,194,255,0.12); border-radius:14px; padding:36px 30px; transition:all 0.3s; }
+        .why-card:hover { background:rgba(0,194,255,0.09); border-color:rgba(0,194,255,0.35); transform:translateY(-4px); }
         .why-number { font-family:'Montserrat',sans-serif; font-size:52px; font-weight:900; background:linear-gradient(135deg, var(--blue-light), var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1; margin-bottom:16px; }
         .why-card h3 { font-family:'Montserrat',sans-serif; font-size:19px; font-weight:700; color:var(--white); margin-bottom:10px; }
         .why-card p { font-size:14px; color:rgba(255,255,255,0.55); line-height:1.75; }
@@ -195,7 +266,7 @@
         .testimonials { padding:100px 60px; background:var(--gray-light); }
         .testimonials-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; max-width:1200px; margin:0 auto; }
         .testimonial-card { background:var(--white); border-radius:14px; padding:36px 32px; transition:all 0.3s; border:2px solid transparent; box-shadow:0 2px 16px rgba(26,86,255,0.06); }
-        .testimonial-card:hover { border-color:rgba(26,86,255,0.2); box-shadow:0 12px 40px rgba(26,86,255,0.12); transform:translateY(-4px); }
+        .testimonial-card:hover { border-color:rgba(0,194,255,0.25); box-shadow:0 12px 40px rgba(0,150,255,0.12); transform:translateY(-4px); }
         .stars { color:var(--yellow); font-size:18px; margin-bottom:16px; letter-spacing:2px; }
         .testimonial-card p { font-size:15px; color:#374151; line-height:1.75; margin-bottom:20px; }
         .reviewer { display:flex; align-items:center; gap:12px; }
@@ -210,38 +281,33 @@
         .area-tag:hover { background:linear-gradient(135deg, var(--blue), var(--cyan)); color:var(--white); border-color:transparent; }
 
         /* ─── QUOTE FORM ─── */
-        .quote { padding:100px 60px; background:linear-gradient(135deg, var(--navy) 0%, #0F2A6B 100%); position:relative; overflow:hidden; }
-        .quote-bg-glow { position:absolute; top:-20%; right:-10%; width:600px; height:600px; background:radial-gradient(circle, rgba(0,194,255,0.08) 0%, transparent 65%); border-radius:50%; pointer-events:none; }
+        .quote { padding:100px 60px; background:linear-gradient(160deg, var(--navy) 0%, #0A2255 100%); position:relative; overflow:hidden; }
+        .quote-bg-glow { position:absolute; top:-20%; right:-10%; width:600px; height:600px; background:radial-gradient(circle, rgba(0,194,255,0.07) 0%, transparent 65%); border-radius:50%; pointer-events:none; animation:glowPulse 8s ease-in-out infinite; }
         .quote .section-header h2 { color:var(--white); }
         .quote .section-header p { color:rgba(255,255,255,0.55); }
         .quote .section-tag { color:var(--cyan); }
-        .quote-form { max-width:580px; margin:0 auto; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:18px; padding:48px; }
+        .quote-form { max-width:580px; margin:0 auto; background:rgba(0,194,255,0.05); border:1px solid rgba(0,194,255,0.15); border-radius:18px; padding:48px; }
         .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
         .form-group { margin-bottom:18px; }
         .form-group label { display:block; font-size:12px; font-weight:700; color:rgba(255,255,255,0.6); margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; }
-        .form-group input, .form-group select, .form-group textarea { width:100%; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:13px 16px; color:var(--white); font-size:15px; font-family:'Open Sans',sans-serif; transition:border-color 0.3s; outline:none; }
+        .form-group input, .form-group select, .form-group textarea { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(0,194,255,0.2); border-radius:8px; padding:13px 16px; color:var(--white); font-size:15px; font-family:'Open Sans',sans-serif; transition:border-color 0.3s; outline:none; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,194,255,0.1); }
         .form-group input::placeholder, .form-group textarea::placeholder { color:rgba(255,255,255,0.3); }
         .form-group select option { background:var(--navy); }
         .form-group textarea { resize:vertical; min-height:110px; }
-        .btn-submit { width:100%; background:linear-gradient(135deg, var(--blue), var(--cyan)); color:var(--white); border:none; padding:17px; border-radius:8px; font-family:'Montserrat',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.3s; margin-top:6px; box-shadow:0 4px 20px rgba(26,86,255,0.4); letter-spacing:0.3px; }
-        .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(26,86,255,0.5); }
+        .btn-submit { width:100%; background:linear-gradient(135deg, var(--blue), var(--cyan)); color:var(--white); border:none; padding:17px; border-radius:8px; font-family:'Montserrat',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.3s; margin-top:6px; box-shadow:0 4px 20px rgba(0,150,255,0.4); }
+        .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,150,255,0.5); }
 
         /* ─── FOOTER ─── */
-        footer { background:var(--navy); border-top:1px solid rgba(255,255,255,0.07); padding:36px 60px; display:flex; justify-content:space-between; align-items:center; }
-        .footer-logo { font-family:'Montserrat',sans-serif; font-weight:900; font-size:20px; color:var(--white); letter-spacing:-0.5px; }
+        footer { background:var(--navy); border-top:1px solid rgba(0,194,255,0.1); padding:36px 60px; display:flex; justify-content:space-between; align-items:center; }
+        .footer-logo { font-family:'Montserrat',sans-serif; font-weight:900; font-size:20px; color:var(--white); }
         .footer-logo span { color:var(--cyan); }
         .footer-center { text-align:center; font-size:13px; color:rgba(255,255,255,0.4); line-height:1.7; }
         .footer-phone a { font-family:'Montserrat',sans-serif; font-size:17px; font-weight:700; color:var(--cyan); text-decoration:none; }
 
         /* ─── MOBILE STICKY CTA ─── */
-        .mobile-cta {
-            display:none;
-            position:fixed; bottom:0; left:0; right:0; z-index:999;
-            background:linear-gradient(90deg, var(--blue), var(--cyan));
-            padding:16px 24px; text-align:center;
-        }
-        .mobile-cta a { color:var(--white); font-family:'Montserrat',sans-serif; font-weight:800; font-size:16px; text-decoration:none; letter-spacing:0.5px; }
+        .mobile-cta { display:none; position:fixed; bottom:0; left:0; right:0; z-index:999; background:linear-gradient(90deg, var(--blue), var(--cyan)); padding:16px 24px; text-align:center; }
+        .mobile-cta a { color:var(--white); font-family:'Montserrat',sans-serif; font-weight:800; font-size:16px; text-decoration:none; }
 
         /* ─── ANIMATIONS ─── */
         .fade-in { opacity:0; transform:translateY(28px); transition:opacity 0.65s ease, transform 0.65s ease; }
@@ -251,8 +317,8 @@
         @media (max-width:900px) {
             nav { padding:16px 24px; }
             .nav-links { display:none; }
-            .trust-strip { padding:10px 24px; gap:20px; }
-            .hero-content { grid-template-columns:1fr; padding:80px 24px 60px; gap:40px; }
+            .water-strip-content { padding:0 24px; gap:20px; }
+            .hero-inner { grid-template-columns:1fr; padding:60px 24px 40px; gap:40px; }
             .hero h1 { font-size:36px; }
             .hero-sub { font-size:15px; }
             .services, .why-us, .quote, .service-area, .how-it-works, .testimonials { padding:64px 24px; }
@@ -281,20 +347,102 @@
         </ul>
     </nav>
 
-    <!-- TRUST STRIP -->
-    <div class="trust-strip">
-        <span class="trust-item">✅ Licensed & Insured</span>
-        <span class="trust-item">✅ Free Estimates</span>
-        <span class="trust-item">✅ Same-Day Service</span>
-        <span class="trust-item">⚡ 24/7 Emergency Calls</span>
+    <!-- ANIMATED WATER TRUST STRIP -->
+    <div class="water-strip">
+        <div class="water-strip-content">
+            <span class="trust-item">✅ Licensed & Insured</span>
+            <span class="trust-item">✅ Free Estimates</span>
+            <span class="trust-item">✅ Same-Day Service</span>
+            <span class="trust-item">⚡ 24/7 Emergency Calls</span>
+        </div>
     </div>
 
     <!-- HERO -->
     <section class="hero">
-        <div class="hero-grid-bg"></div>
-        <div class="hero-glow"></div>
-        <div class="hero-glow-2"></div>
-        <div class="hero-content">
+
+        <!-- Cartoon pipe network background -->
+        <svg class="pipe-bg" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <!-- Main pipes -->
+            <rect x="0" y="200" width="400" height="22" rx="11" fill="#00C2FF"/>
+            <rect x="440" y="200" width="300" height="22" rx="11" fill="#00C2FF"/>
+            <rect x="800" y="200" width="640" height="22" rx="11" fill="#00C2FF"/>
+            <rect x="200" y="100" width="22" height="122" rx="11" fill="#00C2FF"/>
+            <rect x="200" y="0" width="22" height="80" rx="11" fill="#00C2FF"/>
+            <rect x="700" y="80" width="22" height="142" rx="11" fill="#00C2FF"/>
+            <rect x="1100" y="140" width="22" height="82" rx="11" fill="#00C2FF"/>
+            <!-- Lower pipes -->
+            <rect x="0" y="500" width="500" height="22" rx="11" fill="#1A56FF"/>
+            <rect x="560" y="500" width="600" height="22" rx="11" fill="#1A56FF"/>
+            <rect x="1220" y="500" width="220" height="22" rx="11" fill="#1A56FF"/>
+            <rect x="400" y="380" width="22" height="142" rx="11" fill="#1A56FF"/>
+            <rect x="900" y="420" width="22" height="102" rx="11" fill="#1A56FF"/>
+            <!-- Extra small pipes -->
+            <rect x="0" y="650" width="220" height="16" rx="8" fill="#00C2FF"/>
+            <rect x="1100" y="620" width="340" height="16" rx="8" fill="#00C2FF"/>
+            <rect x="600" y="700" width="300" height="16" rx="8" fill="#1A56FF"/>
+            <rect x="600" y="580" width="16" height="136" rx="8" fill="#1A56FF"/>
+            <!-- Pipe joints / elbows (circles) -->
+            <circle cx="200" cy="200" r="18" fill="#00C2FF"/>
+            <circle cx="400" cy="200" r="18" fill="#00C2FF"/>
+            <circle cx="700" cy="200" r="18" fill="#00C2FF"/>
+            <circle cx="800" cy="200" r="18" fill="#00C2FF"/>
+            <circle cx="1100" cy="200" r="18" fill="#00C2FF"/>
+            <circle cx="400" cy="500" r="16" fill="#1A56FF"/>
+            <circle cx="530" cy="500" r="16" fill="#1A56FF"/>
+            <circle cx="900" cy="500" r="16" fill="#1A56FF"/>
+            <circle cx="1200" cy="500" r="16" fill="#1A56FF"/>
+            <circle cx="600" cy="700" r="14" fill="#1A56FF"/>
+            <circle cx="900" cy="700" r="14" fill="#1A56FF"/>
+            <!-- Animated water flow dashes inside pipes -->
+            <line x1="10" y1="211" x2="390" y2="211" stroke="white" stroke-width="4" stroke-dasharray="20 30" opacity="0.6">
+                <animate attributeName="stroke-dashoffset" from="0" to="-100" dur="1.5s" repeatCount="indefinite"/>
+            </line>
+            <line x1="450" y1="211" x2="790" y2="211" stroke="white" stroke-width="4" stroke-dasharray="20 30" opacity="0.6">
+                <animate attributeName="stroke-dashoffset" from="0" to="-100" dur="2s" repeatCount="indefinite"/>
+            </line>
+            <line x1="810" y1="211" x2="1430" y2="211" stroke="white" stroke-width="4" stroke-dasharray="20 30" opacity="0.6">
+                <animate attributeName="stroke-dashoffset" from="0" to="-100" dur="1.8s" repeatCount="indefinite"/>
+            </line>
+            <line x1="10" y1="511" x2="490" y2="511" stroke="white" stroke-width="3" stroke-dasharray="15 25" opacity="0.4">
+                <animate attributeName="stroke-dashoffset" from="0" to="-80" dur="2.2s" repeatCount="indefinite"/>
+            </line>
+            <!-- Water drop cartoon shapes -->
+            <ellipse cx="1300" cy="380" rx="28" ry="36" fill="#00C2FF" opacity="0.6"/>
+            <polygon points="1300,330 1278,370 1322,370" fill="#00C2FF" opacity="0.6"/>
+            <ellipse cx="120" cy="600" rx="20" ry="26" fill="#1A56FF" opacity="0.5"/>
+            <polygon points="120,562 104,592 136,592" fill="#1A56FF" opacity="0.5"/>
+            <!-- Wrench outlines -->
+            <g transform="translate(1050, 330) rotate(-30)" opacity="0.25">
+                <rect x="-8" y="-50" width="16" height="80" rx="4" fill="#00C2FF"/>
+                <ellipse cx="0" cy="-50" rx="22" ry="18" fill="none" stroke="#00C2FF" stroke-width="10"/>
+                <ellipse cx="0" cy="30" rx="18" ry="14" fill="none" stroke="#00C2FF" stroke-width="10"/>
+            </g>
+            <g transform="translate(320, 430) rotate(15)" opacity="0.2">
+                <rect x="-6" y="-40" width="12" height="65" rx="3" fill="#1A56FF"/>
+                <ellipse cx="0" cy="-40" rx="18" ry="14" fill="none" stroke="#1A56FF" stroke-width="8"/>
+                <ellipse cx="0" cy="25" rx="14" ry="11" fill="none" stroke="#1A56FF" stroke-width="8"/>
+            </g>
+        </svg>
+
+        <!-- Floating water bubbles -->
+        <div class="bubbles">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+        </div>
+
+        <div class="water-glow-1"></div>
+        <div class="water-glow-2"></div>
+
+        <!-- Hero content -->
+        <div class="hero-inner">
             <div class="fade-in">
                 <div class="hero-badge">
                     <div class="badge-dot"></div>
@@ -304,7 +452,7 @@
                 <p class="hero-sub">Leaks, drains, water heaters, and more — J the Plumber shows up fast and gets it fixed right. No runaround, no surprises.</p>
                 <div class="hero-buttons">
                     <a href="#quote" class="btn-primary">Get a Free Quote</a>
-                    <a href="tel:4086762938" class="btn-emergency">⚡ Call Now — (408) 676-2938</a>
+                    <a href="tel:4086762938" class="btn-emergency">⚡ Call — (408) 676-2938</a>
                 </div>
             </div>
             <div class="hero-right fade-in">
@@ -331,6 +479,14 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Animated wave at bottom of hero -->
+        <div class="wave-divider" style="margin-top: auto;">
+            <svg viewBox="0 0 1440 90" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,40 C180,80 360,0 540,40 C720,80 900,0 1080,40 C1260,80 1440,20 1440,40 L1440,90 L0,90 Z" fill="#F4F7FF"/>
+                <path d="M0,55 C200,90 400,20 600,55 C800,90 1000,20 1200,55 C1300,70 1440,40 1440,55 L1440,90 L0,90 Z" fill="#F4F7FF" opacity="0.5"/>
+            </svg>
         </div>
     </section>
 
@@ -439,7 +595,7 @@
         <div class="testimonials-grid">
             <div class="testimonial-card fade-in">
                 <div class="stars">★★★★★</div>
-                <p>"Called at 8am with a burst pipe under my sink. He was at my house by 10am and had it fixed in an hour. Fair price and zero mess left behind. Exactly what you want from a plumber."</p>
+                <p>"Called at 8am with a burst pipe under my sink. He was at my house by 10am and had it fixed in an hour. Fair price and zero mess left behind."</p>
                 <div class="reviewer">
                     <div class="reviewer-avatar">M</div>
                     <div>
@@ -450,7 +606,7 @@
             </div>
             <div class="testimonial-card fade-in">
                 <div class="stars">★★★★★</div>
-                <p>"Had a slow drain in the kitchen that two other plumbers couldn't fully clear. J came out, found the real problem, and fixed it same day. Should've called him first."</p>
+                <p>"Had a slow drain two other plumbers couldn't clear. J came out, found the real problem, and fixed it same day. Should've called him first."</p>
                 <div class="reviewer">
                     <div class="reviewer-avatar">L</div>
                     <div>
@@ -461,7 +617,7 @@
             </div>
             <div class="testimonial-card fade-in">
                 <div class="stars">★★★★★</div>
-                <p>"Replaced our water heater quickly and for a better price than anyone else quoted us. Showed up on time, explained everything, and cleaned up the whole area before leaving."</p>
+                <p>"Replaced our water heater quickly and for a better price than anyone else quoted us. Showed up on time, explained everything, cleaned up before leaving."</p>
                 <div class="reviewer">
                     <div class="reviewer-avatar">D</div>
                     <div>
@@ -478,7 +634,7 @@
         <div class="section-header fade-in">
             <span class="section-tag">Where We Work</span>
             <h2>Serving the South Bay</h2>
-            <p>Based in Milpitas — covering the entire South Bay and East Bay area.</p>
+            <p>Based in Milpitas — covering the entire South Bay and East Bay.</p>
         </div>
         <div class="area-tags fade-in">
             <span class="area-tag">Milpitas</span>
