@@ -694,7 +694,7 @@
             <h2>Get Your Free Quote</h2>
             <p>Fill this out and we'll get back to you fast — usually within the hour.</p>
         </div>
-        <div class="quote-form fade-in">
+        <form class="quote-form fade-in" id="quoteForm">
             <div class="form-row">
                 <div class="form-group">
                     <label>Your Name</label>
@@ -722,9 +722,9 @@
                 <label>Tell Us More</label>
                 <textarea id="quoteMessage" placeholder="Describe the issue, your address, and the best time to reach you..."></textarea>
             </div>
-            <button class="btn-submit" id="quoteSubmitBtn">Send My Request →</button>
+            <button class="btn-submit" type="submit" id="quoteSubmitBtn">Send My Request →</button>
             <p id="quoteStatus" style="margin-top:12px;font-size:14px;"></p>
-        </div>
+        </form>
     </section>
 
     <!-- FOOTER -->
@@ -752,10 +752,12 @@
 
         // Quote form -> instant lead response webhook
         const QUOTE_WEBHOOK_URL = 'https://plans-jacksonville-minerals-gifts.trycloudflare.com/webhook/instant-lead-pressure-washing';
+        const quoteForm = document.getElementById('quoteForm');
         const quoteSubmitBtn = document.getElementById('quoteSubmitBtn');
         const quoteStatus = document.getElementById('quoteStatus');
 
-        quoteSubmitBtn.addEventListener('click', async () => {
+        quoteForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
             const name = document.getElementById('quoteName').value.trim();
             const phone = document.getElementById('quotePhone').value.trim();
             const service = document.getElementById('quoteService').value;
@@ -778,14 +780,15 @@
                         'Content-Type': 'application/json',
                         'X-Webhook-Secret': 'zJqL4Uk1HBnDcdfavcEb9pqvbVMmpWMznjOaa8gijkA'
                     },
-                    body: JSON.stringify({ name, phone, service, message })
+                    body: JSON.stringify({ name, phone, service, message }),
+                    signal: AbortSignal.timeout(10000)
                 });
                 if (!response.ok) {
                     throw new Error(`Webhook returned ${response.status}`);
                 }
                 quoteSubmitBtn.textContent = 'Request Sent ✓';
                 quoteStatus.textContent = "Thanks! We'll text you shortly.";
-                quoteStatus.style.color = '#1a3a5c';
+                quoteStatus.style.color = '#00C2FF';
             } catch (err) {
                 quoteSubmitBtn.disabled = false;
                 quoteSubmitBtn.textContent = 'Send My Request →';
